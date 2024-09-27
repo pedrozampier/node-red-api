@@ -21,7 +21,7 @@ class MachineTemperature extends Model
     public static function getTemperatures($startDate, $endDate)
     {
         $query = DB::table('machine_temperature')
-        ->select('temperature', 'efficiency', 'recorded_at');
+            ->select('temperature', 'efficiency', 'recorded_at');
 
         if ($startDate && $endDate && $startDate != 'undefined' && $endDate != 'undefined') {
             $query->whereBetween('recorded_at', [$startDate, $endDate]);
@@ -29,11 +29,14 @@ class MachineTemperature extends Model
 
         $data = $query->get();
 
-        return [
-            'temperature' => $data->pluck('temperature'),
-            'efficiency' => $data->pluck('efficiency'),
-            'recorded_at' => $data->pluck('recorded_at'),
-        ];
+        return $data->map(function ($item) {
+            return [
+                'temperature' => $item->temperature,
+                'efficiency' => $item->efficiency,
+                'recorded_at' => $item->recorded_at,
+            ];
+        });
     }
+
 
 }
