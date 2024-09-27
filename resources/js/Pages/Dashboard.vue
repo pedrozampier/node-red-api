@@ -7,6 +7,18 @@ import { ref, watch } from 'vue';
 
 const dateFilterQuery = ref('');
 
+const headers = ref([
+    'efficiency',
+    'temperature',
+    'recorded_at',
+]);
+
+const labels = ref([
+    'Eficiência',
+    'Temperatura',
+    'Data de Registro',
+]);
+
 watch(() => dateFilterQuery.value, () => {
     console.log(dateFilterQuery.value)
 });
@@ -28,7 +40,7 @@ watch(() => dateFilterQuery.value, () => {
             <DateSearch v-model:dateFilterQuery="dateFilterQuery" />
         </div>
         <div>
-            <Table :endpoint="`/machine-temperature${dateFilterQuery}`" />
+            <Table :endpoint="`/machine-temperature${dateFilterQuery}`" :headers="headers" :labels="labels" />
         </div>
 
     </AuthenticatedLayout>
